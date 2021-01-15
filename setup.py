@@ -20,5 +20,6 @@ setuptools.setup(
         'lxml',
         'bs4',
         'requests'
-    ]
+    ],
+    python_requires='>=3.6',
 )
