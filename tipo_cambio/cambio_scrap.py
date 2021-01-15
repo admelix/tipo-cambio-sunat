@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
-from exceptions import InvalidCurrency, InvalidSource, InvalidYearException, NoDataFoundException
+from .exceptions import InvalidCurrency, InvalidSource, InvalidYearException, NoDataFoundException
 
 import requests
 import pandas as pd
