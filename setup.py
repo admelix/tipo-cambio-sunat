@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='FactoringTotal',
-    version='1.0.0',
+    version='1.0.1',
     packages=setuptools.find_packages(),
     url='https://github.com/admelix/tipo-cambio-sunat',
     license='GNU General Public License v3.0',
