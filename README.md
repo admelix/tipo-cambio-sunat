@@ -1,5 +1,5 @@
 # Factoring Total
-[![PyPI version](https://badge.fury.io/py/nazk.svg)](https://pypi.org/project/FactoringTotal)
+[![PyPI version](https://badge.fury.io/py/FactoringTotal.svg)](https://pypi.org/project/FactoringTotal)
 
 
 ## Descripción
