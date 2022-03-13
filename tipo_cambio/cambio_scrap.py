@@ -2,14 +2,14 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from .exceptions import InvalidCurrency, InvalidSource, InvalidYearException, NoDataFoundException
 
-import requests
+import requests,ssl,urllib
 import pandas as pd
 import numpy as np
 
 
 
 class TipoCambioFactoring:
-    ENDPOINT = 'http://www.sbs.gob.pe/app/stats/seriesH-tipo_cambio_moneda_excel.asp'
+    ENDPOINT = 'https://www.sbs.gob.pe/app/stats/seriesH-tipo_cambio_moneda_excel.asp'
     CURRENCIES = {
         'USD': '02',
         'SEK': '55',
@@ -21,6 +21,7 @@ class TipoCambioFactoring:
     }
     date_format = None
     source = None
+    ssl._create_default_https_context = ssl._create_unverified_context
 
     def __init__(self, date_format='%d/%m/%Y', source='SBS'):
         self.date_format = date_format
@@ -109,7 +110,8 @@ class TipoCambioFactoring:
 
         try:
             url = 'https://www.sbs.gob.pe/app/pp/SISTIP_PORTAL/Paginas/Publicacion/TipoCambioContable.aspx'
-            page = requests.get(url)
+            ssl._create_default_https_context = ssl._create_unverified_context
+            page = urllib.request.urlopen(url)
             soup = BeautifulSoup(page.content, 'html.parser')
 
             #find value " Tipo contable" in html response
