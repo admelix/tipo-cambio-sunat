@@ -15,12 +15,12 @@ pip install FactoringTotal
 from tipo_cambio import TipoCambioFactoring
 
 ft = TipoCambioFactoring()
-data = ft.get_exchange_rate('USD', '01/01/2021', '10/01/2021')
+data = ft.get_exchange_rate('USD', '01/01/2023', '10/01/2023')
 print(data)
 ```
 Obtendremos el siguiente resultado:
 ```python
-{'01/01/2021': {'compra': '3.618', 'venta': '3.624'}, '02/01/2021': {'compra': '3.618', 'venta': '3.624'}, '03/01/2021': {'compra': '3.618', 'venta': '3.624'}, '04/01/2021': {'compra': '3.624', 'venta': '3.628'}, '05/01/2021': {'compra': '3.627', 'venta': '3.631'}, '06/01/2021': {'compra': '3.625', 'venta': '3.630'}, '07/01/2021': {'compra': '3.620', 'venta': '3.623'}, '08/01/2021': {'compra': '3.610', 'venta': '3.615'}, '09/01/2021': {'compra': '3.610', 'venta': '3.615'}, '10/01/2021': {'compra': '3.610', 'venta': '3.615'}}
+{'01/01/2023': {'compra': '3.808', 'venta': '3.820'}, '02/01/2023': {'compra': '3.808', 'venta': '3.820'}, '03/01/2023': {'compra': '3.812', 'venta': '3.823'}, '04/01/2023': {'compra': '3.822', 'venta': '3.827'}, '05/01/2023': {'compra': '3.824', 'venta': '3.830'}, '06/01/2023': {'compra': '3.800', 'venta': '3.806'}, '07/01/2023': {'compra': '3.800', 'venta': '3.806'}, '08/01/2023': {'compra': '3.800', 'venta': '3.806'}, '09/01/2023': {'compra': '3.792', 'venta': '3.803'}, '10/01/2023': {'compra': '3.802', 'venta': '3.806'}}
 ```
 
 ## Configuración
@@ -34,14 +34,13 @@ Obtendremos el siguiente resultado:
 from tipo_cambio import TipoCambioFactoring
 
 ft = TipoCambioFactoring()
-data = ft.get_exchange_sbs_sunat('14/01/2021', '15/01/2021')
+data = ft.get_exchange_sbs_sunat('01/01/2023', '02/01/2023')
 print(data)
 ```
 Obtendremos el siguiente resultado:
 ```python
-{'status': 200, 'sunat': {'14-01-21': {'compra': '3.610', 'venta': '3.615'}, '15-01-21': {'compra': '3.610', 'venta': '3.613'}}, 'sbs': {'14-01-21': {'compra': '3.610', 'venta': '3.613'}, '15-01-21': {'compra': '3.610', 'venta': '3.614'}}, 'sbs_dolar_contable': '3.6120'}
+{'status': 200, 'sunat': {'01-01-23': {'compra': '3.808', 'venta': '3.820'}, '02-01-23': {'compra': '3.808', 'venta': '3.820'}}, 'sbs': {'01-01-23': {'compra': '3.808', 'venta': '3.820'}, '02-01-23': {'compra': '3.808', 'venta': '3.820'}}, 'sbs_dolar_contable': '3.8250'}
 ```
-
 ## Divisas
 Listado de divisas permitidas.
 

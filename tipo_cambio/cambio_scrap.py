@@ -2,14 +2,13 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from .exceptions import InvalidCurrency, InvalidSource, InvalidYearException, NoDataFoundException
 
-import requests,ssl,urllib
+import requests
 import pandas as pd
 import numpy as np
-
-
+from io import StringIO
 
 class TipoCambioFactoring:
-    ENDPOINT = 'https://www.sbs.gob.pe/app/stats/seriesH-tipo_cambio_moneda_excel.asp'
+    ENDPOINT = 'http://www.sbs.gob.pe/app/stats/seriesH-tipo_cambio_moneda_excel.asp'
     CURRENCIES = {
         'USD': '02',
         'SEK': '55',
@@ -21,7 +20,6 @@ class TipoCambioFactoring:
     }
     date_format = None
     source = None
-    ssl._create_default_https_context = ssl._create_unverified_context
 
     def __init__(self, date_format='%d/%m/%Y', source='SBS'):
         self.date_format = date_format
@@ -51,7 +49,10 @@ class TipoCambioFactoring:
         # Get endpoint
         endpoint = self._get_endpoint(currency_code, from_date.strftime('%d/%m/%Y'), end_date.strftime('%d/%m/%Y'))
         # Create data frames
-        dfs = pd.read_html(endpoint, header=0)
+        response = requests.get(endpoint)
+        response.encoding = 'latin-1'  # Usar 'latin-1' en lugar de 'utf-8'
+        dfs = pd.read_html(StringIO(response.text), header=0)
+        # dfs = pd.read_html(response.text, header=0)
         df = dfs[0]
         if not df.empty:
             df.columns = ['date', 'currency', 'buy', 'sell']
@@ -60,7 +61,7 @@ class TipoCambioFactoring:
             idx = pd.period_range(from_date, end_date)
             df = df.replace(0, np.nan).ffill()
             df = df.set_index('date').reindex(idx, method='pad')
-            df = df.fillna(method='backfill')
+            df = df.bfill()
             if self.source == 'SUNAT':
                 df.index = df.index + timedelta(days=1)
             df = df.loc[date:to_date]
@@ -107,11 +108,9 @@ class TipoCambioFactoring:
             raise NoDataFoundException('No data found.')
     
     def get_exchange_sbs_sunat(self, date, to_date):
-
         try:
             url = 'https://www.sbs.gob.pe/app/pp/SISTIP_PORTAL/Paginas/Publicacion/TipoCambioContable.aspx'
-            ssl._create_default_https_context = ssl._create_unverified_context
-            page = urllib.request.urlopen(url)
+            page = requests.get(url)
             soup = BeautifulSoup(page.content, 'html.parser')
 
             #find value " Tipo contable" in html response
@@ -132,15 +131,13 @@ class TipoCambioFactoring:
             data = {
                 "status": 200,
                 "sunat": sunat,
-                "sbs":sbs,
-                "sbs_dolar_contable":str(tc[2])
+                "sbs": sbs,
+                "sbs_dolar_contable": str(tc[2])
             }
             return data
         except Exception as e:
             error ={
                 "status": "400",
-                "descripcion":f"Ha ocurrido un error en la funcion recuperardatos {e}"
-
-                }
+                "descripcion": f"Ha ocurrido un error en la funcion recuperardatos {e}"
+            }
             return error
-            
